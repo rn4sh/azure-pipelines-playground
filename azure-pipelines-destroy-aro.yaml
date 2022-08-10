@@ -9,6 +9,16 @@ variables:
   CLUSTER: 'nasharo'
   
 steps:
+- task: AzureCLI@2
+  displayName: Azure CLI
+  inputs:
+    azureSubscription: azure-resource-manager
+    scriptType: ps
+    scriptLocation: inlineScript
+    inlineScript: |
+      az --version
+      az account show
+      
 - bash: az --version
   displayName: 'Show Azure CLI version'
 
