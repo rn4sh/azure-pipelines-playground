@@ -1,0 +1,55 @@
+trigger:
+    - main
+
+steps:
+
+- task: CmdLine@2
+  displayName: List directory contents
+  inputs:
+    script: |
+      echo "Listing current dir contents"
+      pwd
+      ls -la
+      echo "Target dir contents:"
+      echo "Artifact Staging dir: $(Build.ArtifactStagingDirectory)"
+      echo "Local dir: $(Build.Repository.LocalPath)"
+      echo "Staging dir: $(Build.StagingDirectory)"
+      echo "Pipeline dir: $(Pipeline.Workspace)"
+      ls -la "$(Build.Repository.LocalPath)"
+      
+- task: KubernetesManifest@0
+  displayName: Create Database
+  inputs:
+    action: deploy
+    kubernetesServiceConnection: 'openshift-aro-generic'
+    namespace: 'aro-ws'
+    manifests: |
+      $(Pipeline.Workspace)/s/resources/db.yaml
+
+- task: KubernetesManifest@0
+  displayName: Create Deployment
+  inputs:
+    action: deploy
+    kubernetesServiceConnection: 'openshift-aro-generic'
+    namespace: 'aro-ws'
+    manifests: |
+      $(Pipeline.Workspace)/s/resources/deployment.yaml
+
+- task: KubernetesManifest@0
+  displayName: Create Service
+  inputs:
+    action: deploy
+    kubernetesServiceConnection: 'openshift-aro-generic'
+    namespace: 'aro-ws'
+    manifests: |
+      $(Pipeline.Workspace)/s/resources/service.yaml
+
+- task: KubernetesManifest@0
+  displayName: Create Route
+  inputs:
+    action: deploy
+    kubernetesServiceConnection: 'openshift-aro-generic'
+    namespace: 'aro-ws'
+    manifests: |
+      $(Pipeline.Workspace)/s/resources/route.yaml
+      
