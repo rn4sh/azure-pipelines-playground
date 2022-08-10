@@ -26,6 +26,7 @@ steps:
   displayName: 'Set default Azure DevOps organization and project'
 
 - bash: |
+    az login
     az aro delete --resource-group $(RESOURCEGROUP) --name $(CLUSTER) --yes
   env:
     AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
