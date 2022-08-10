@@ -4,7 +4,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-ariables:
+variables:
   RESOURCEGROUP: 'aro-rg'
   CLUSTER: 'nasharo'
   
