@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  vmImage: `ubuntu-latest`
+
+ariables:
+  RESOURCEGROUP: 'aro-rg'
+  CLUSTER: 'nasharo'
+  
+steps:
+- bash: az --version
+  displayName: 'Show Azure CLI version'
+
+- bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
+  displayName: 'Set default Azure DevOps organization and project'
+
+- bash: |
+    az aro delete --resource-group $(RESOURCEGROUP) --name $(CLUSTER)
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
