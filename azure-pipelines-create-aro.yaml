@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+  vmImage: `ubuntu-latest`
+
+ariables:
+  RESOURCEGROUP: 'aro-rg'
+  CLUSTER: 'nasharo'
+  
+steps:
+- bash: az --version
+  displayName: 'Show Azure CLI version'
+
+- bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
+  displayName: 'Set default Azure DevOps organization and project'
+
+- bash: |
+    az aro create \
+  --resource-group $(RESOURCEGROUP) \
+  --name $(CLUSTER) \
+  --vnet aro-vnet \
+  --master-subnet master-subnet \
+  --worker-subnet worker-subnet \
+  --pull-secret @$(Build.Repository.LocalPath)/pull-secret.txt
+  displayName: 'Create ARO cluster'
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
