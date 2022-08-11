@@ -1,0 +1,24 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: oc-cmd@2
+  displayName: Create ARO project
+  inputs:
+    openshiftService: 'ocp-aro'
+    cmd: 'oc new-project aro-ws'
+    
+- task: oc-cmd@2
+  displayName: Create SA
+  inputs:
+    openshiftService: 'ocp-aro'
+    cmd: 'oc create sa azure-sa -n ocp-aro'
+    
+- task: oc-cmd@2
+  displayName: Create SA policy
+  inputs:
+    openshiftService: 'ocp-aro'
+    cmd: '  oc policy add-role-to-user edit system:serviceaccount:aro-ws:azure-sa'
