@@ -1,4 +1,3 @@
-
 trigger:
 - none
 
@@ -10,24 +9,14 @@ variables:
   CLUSTER: 'nasharo'
   
 steps:
-##- task: AzureCLI@2
-##  displayName: Azure CLI
-##  inputs:
-##   azureSubscription: azure-resource-manager
-##    scriptType: pscore
-##    scriptLocation: inlineScript
-##    inlineScript: |
-##      az --version
-##      az account show
-      
-##- bash: az --version
-##  displayName: 'Show Azure CLI version'
+- bash: az --version
+  displayName: 'Show Azure CLI version'
 
-##- bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
-##  displayName: 'Set default Azure DevOps organization and project'
+- bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
+  displayName: 'Set default Azure DevOps organization and project'
 
-- bash: |
-    az login
-##    az aro delete --resource-group $(RESOURCEGROUP) --name $(CLUSTER) --yes
-  env:
-    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+- bash: az login
+  displayName: 'Authenticate'
+
+- bash: az aro delete --resource-group $(RESOURCEGROUP) --name $(CLUSTER) --yes
+  displayName: 'Delete cluster'
