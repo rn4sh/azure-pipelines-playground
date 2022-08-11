@@ -15,7 +15,7 @@ steps:
   displayName: Create SA
   inputs:
     openshiftService: 'ocp-aro'
-    cmd: 'oc create sa azure-sa -n ocp-aro'
+    cmd: 'oc create sa azure-sa -n aro-ws'
     
 - task: oc-cmd@2
   displayName: Create SA policy
