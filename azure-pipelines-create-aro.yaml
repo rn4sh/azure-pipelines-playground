@@ -25,8 +25,9 @@ steps:
     inlineScript: |
         echo $(RESOURCEGROUP)
         echo $(CLUSTER)
-        echo $(Build.Repository.LocalPath)/pull-secret.txt
-        ls $(Pipeline.Workspace)
+        echo $(Build.Repository.LocalPath)
+        echo $(Build.SourcesDirectory)
+        ls $(Build.Repository.LocalPath)
  #     az aro create \
  #     --resource-group $(RESOURCEGROUP) \
  #     --name $(CLUSTER) \
