@@ -1,7 +1,4 @@
-trigger:
-- branch
-
-container:
+pool:
   vmImage: 'ubuntu-latest'
 
 variables:
